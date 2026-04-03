@@ -38,3 +38,15 @@ for ((i=1; i<=5; i++)); do
 	TIMESRECEIVED="$(echo "$TOPSTATUSCODES" | awk -v i="$i" ' NR==i { print $1 }')"
 	printf "%-15s %s\n" "$CODE" "$TIMESRECEIVED"
 done
+echo
+
+
+TOPUSERAGENTS="$(awk -F '"' '{ print $6 }' "$FILEDIR" | sort -r | uniq -c | sort -gr | head -n 5)"
+echo "The top 5 most received user agents:"
+printf "%-120s %s\n" "USER AGENT" "TIMES RECEIVED"
+
+for ((i=1; i<=5; i++)); do
+	USERAGENT="$(echo "$TOPUSERAGENTS" | awk -v i="$i" ' NR==i {for (i=2;i<=NF;i++) printf $i " " }')"
+	TIMESRECEIVED="$(echo "$TOPUSERAGENTS" | awk -v i="$i" ' NR==i { print $1 }')"
+	printf "%-120s %s\n" "$USERAGENT" "$TIMESRECEIVED"
+done
